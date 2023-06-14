@@ -1,0 +1,729 @@
+package gui;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class BasesConversion extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField tfInput;
+	private JTextField tfOutput;
+	private JLabel lbl2;
+	private JButton btn2;
+	private JButton btn3;
+	private JButton btn4;
+	private boolean btnBinary;
+	private boolean btnOctal;
+	private boolean btnDecimal;
+	private boolean btnHexa;
+	private boolean btnError;
+	private boolean btnMinus;
+	String btnUsedInput="";
+	String btnUsedOutput="";
+	String mark;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					BasesConversion frame = new BasesConversion();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public BasesConversion() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 341);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
+		
+		tfInput = new JTextField();
+		tfInput.setBounds(10, 103, 414, 63);
+		contentPane.add(tfInput);
+		tfInput.setColumns(10);
+		
+		tfOutput = new JTextField();
+		tfOutput.setColumns(10);
+		tfOutput.setBounds(10, 256, 414, 35);
+		contentPane.add(tfOutput);
+		
+		JLabel lblUsed = new JLabel("");
+		lblUsed.setForeground(new Color(255, 0, 0));
+		lblUsed.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblUsed.setBounds(227, 78, 140, 17);
+		contentPane.add(lblUsed);
+		
+		JButton btn1_1 = new JButton("Binary");
+		btn1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnBinary=true;
+				btnUsedInput = ": Binary";
+				lblUsed.setText(btnUsedInput);
+			}
+		});
+		btn1_1.setForeground(Color.BLACK);
+		btn1_1.setBackground(new Color(255, 208, 100));
+		btn1_1.setBounds(10, 42, 79, 23);
+		contentPane.add(btn1_1);
+		
+		JButton btn2_1 = new JButton("Octal");
+		btn2_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnOctal=true;
+				btnUsedInput = ": Octal";
+				lblUsed.setText(btnUsedInput);
+			}
+		});
+		btn2_1.setForeground(Color.BLACK);
+		btn2_1.setBackground(new Color(255, 208, 100));
+		btn2_1.setBounds(108, 42, 79, 23);
+		contentPane.add(btn2_1);
+		
+		JButton btn3_1 = new JButton("Decimal");
+		btn3_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDecimal=true;
+				btnUsedInput = ": Decimal";
+				lblUsed.setText(btnUsedInput);
+			}
+		});
+		btn3_1.setForeground(Color.BLACK);
+		btn3_1.setBackground(new Color(255, 208, 100));
+		btn3_1.setBounds(205, 42, 119, 23);
+		contentPane.add(btn3_1);
+		
+		JButton btn4_1 = new JButton("Hexa");
+		btn4_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnHexa=true;
+				btnUsedInput = ": Hexa";
+				lblUsed.setText(btnUsedInput);
+			}
+		});
+		btn4_1.setForeground(Color.BLACK);
+		btn4_1.setBackground(new Color(255, 208, 100));
+		btn4_1.setBounds(345, 42, 79, 23);
+		contentPane.add(btn4_1);
+		
+		JLabel lblBase = new JLabel("Input (Base)");
+		lblBase.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblBase.setBounds(180, 11, 103, 23);
+		contentPane.add(lblBase);
+		
+		JButton btn1 = new JButton("Binary");
+		btn1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnUsedOutput=" → Binary";
+				
+				if(btnBinary) {
+					//binary to binary
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					int i=0;
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+						if(!a[i].equals("1")&!a[i].equals("0")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					tfOutput.setText(tfInput.getText());
+					}
+				}
+				
+				if(btnDecimal) {
+					//decimal to binary
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					int i=0;
+					int j=0;
+					String a[] = new String[100];
+					int b[] = new int[100];
+					String result = "";
+						for(i=0; i<tfInput.getText().length(); i++) {
+							a[i] = String.valueOf(tfInput.getText().charAt(i));
+								if(!a[i].matches("[0-9]")) {
+									btnError=true;
+								}
+						}
+						if(btnError) {
+							tfOutput.setText("Error");
+							btnError=false;
+						}
+						else {
+							String input = tfInput.getText().replaceAll(" ", "");
+							int number = Integer.valueOf(input);
+							if(number==0) {
+								result = "0";
+							}
+							else {
+							while(number!=0) {
+								b[i]= number%2;
+								number = number/2;
+								i++;
+							}
+							for(j=i-1; j>input.length()-1; j--) {
+								result = result+b[j];
+							}
+							}
+							tfOutput.setText(result);
+							btnDecimal = false;
+						}
+				}
+				
+				if(btnOctal) {
+					//octal to binary
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					int i=0;
+					int j=0;
+					int fixNumber = 0;
+					String number = tfInput.getText().replaceAll(" ", "");
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+						if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					for(i=number.length()-1; i>=0; i--) {
+						double digit =  Double.parseDouble(String.valueOf(number.charAt(i)));
+						fixNumber = (int) (Math.pow(8, j)*digit + fixNumber);
+						j++;
+					}
+					i=0;
+					StringBuilder binaryNumber = new StringBuilder();
+					if(fixNumber==0) {
+						binaryNumber.insert(0, 0);
+					}
+					else {
+					while(fixNumber>0) {
+						int remainder = fixNumber%2;
+						binaryNumber.insert(0, remainder);
+						fixNumber = fixNumber/2;
+					}
+					}
+					tfOutput.setText(String.valueOf(binaryNumber));
+					btnOctal=false;
+					}
+				}
+				
+				if(btnHexa) {
+					//hexa to binary
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					int i=0;
+					int j=0;
+					int fixNumber = 0;
+					String number = tfInput.getText().replaceAll(" ", "");
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+						if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")&!a[i].equals("8")&!a[i].equals("9")&!a[i].equals("A")&!a[i].equals("B")&!a[i].equals("C")&!a[i].equals("D")&!a[i].equals("E")&!a[i].equals("F")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					for(i=number.length()-1; i>=0; i--) {
+						int digit =   Character.digit(number.charAt(i), 16);;
+						fixNumber = (int) (Math.pow(16, j)*digit + fixNumber);
+						j++;
+					}
+					i=0;
+					StringBuilder binaryNumber = new StringBuilder();
+					if(fixNumber==0) {
+						binaryNumber.insert(0,0);
+					}
+					else {
+					while(fixNumber>0) {
+						int remainder = fixNumber%2;
+						binaryNumber.insert(0, remainder);
+						fixNumber = fixNumber/2;
+					}
+					}
+					tfOutput.setText(String.valueOf(binaryNumber));
+					btnHexa=false;
+					}
+				}
+			}
+		});
+		btn1.setBackground(new Color(0, 255, 64));
+		btn1.setForeground(new Color(0, 0, 0));
+		btn1.setBounds(10, 199, 79, 23);
+		contentPane.add(btn1);
+		
+		JLabel lbl = new JLabel("Output (Base)");
+		lbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lbl.setBounds(180, 171, 103, 23);
+		contentPane.add(lbl);
+		
+		lbl2 = new JLabel("Output");
+		lbl2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lbl2.setBounds(180, 233, 56, 23);
+		contentPane.add(lbl2);
+		
+		btn2 = new JButton("Octal");
+		btn2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnUsedOutput=" → Octal";
+				int i = 0;
+				int j = 0;
+				int fixNumber = 0;
+				String result="";
+				
+				//binary to octal
+				if(btnBinary) {
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+						if(!a[i].equals("1")&!a[i].equals("0")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					String number = tfInput.getText().replaceAll(" ", "");
+					for(i=number.length()-1; i>=0; i--) {
+						double digit =  Double.parseDouble(String.valueOf(number.charAt(i)));
+						fixNumber = (int) (Math.pow(2, j)*digit + fixNumber);
+						j++;
+					}
+					int b[] = new int[100];
+					i=0;
+					if(fixNumber==0) {
+						result="0";
+					}
+					else {
+					while(fixNumber!=0) {
+						 b[i]= fixNumber%8;
+				    	 fixNumber = fixNumber/8;
+				    	 i++;
+					}
+					for(j=i-1; j>=0; j--) {
+						result = result+b[j];
+					}
+					}
+					tfOutput.setText(String.valueOf(result));
+					btnBinary = false;
+				}
+				}
+				
+				//decimal to octal
+				if(btnDecimal) {
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+							if(!a[i].matches("[0-9]")) {
+								btnError=true;
+							}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+						int number = Integer.valueOf(tfInput.getText().replaceAll(" ", ""));
+						i=0;
+						int b[] = new int[100];
+						result="";
+						if(number==0) {
+							result = "0";
+						}
+						else {
+							while(number!=0) {
+								b[i]= number%8;
+								number = number/8;
+								i++;
+							}
+						for(j=i-1; j>=0; j--) {
+							result = result+b[j];
+						}
+						}
+				tfOutput.setText(result);
+				btnDecimal=false;
+					}
+				}	
+					
+				//octal to octal
+				if(btnOctal) {
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+						if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					tfOutput.setText(tfInput.getText().replaceAll(" ", ""));
+					btnOctal=false;
+					}
+				}
+				
+				if(btnHexa) {
+					//hexa to Octal
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String number = tfInput.getText().replaceAll(" ", "");
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+							if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")&!a[i].equals("8")&!a[i].equals("9")&!a[i].equals("A")&!a[i].equals("B")&!a[i].equals("C")&!a[i].equals("D")&!a[i].equals("E")&!a[i].equals("F")) {
+								btnError=true;
+							}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					for(i=number.length()-1; i>=0; i--) {
+						char ch = number.charAt(i);
+						int digits = Character.digit(ch, 16);
+						fixNumber = (int) (Math.pow(16, j)*digits+fixNumber);
+						j++;
+					}
+					i=0;
+					StringBuilder binaryNumber = new StringBuilder();
+					if(fixNumber==0) {
+						binaryNumber.insert(0,0);
+					}
+					else {
+					while(fixNumber>0) {
+						int remainder = fixNumber%8;
+						binaryNumber.insert(0, remainder);
+						fixNumber = fixNumber/8;
+					}
+					
+					tfOutput.setText(String.valueOf(binaryNumber));
+					btnHexa=false;
+					}
+					}
+				}
+			}
+		});
+		btn2.setForeground(Color.BLACK);
+		btn2.setBackground(new Color(0, 255, 64));
+		btn2.setBounds(110, 199, 79, 23);
+		contentPane.add(btn2);
+		
+		btn3 = new JButton("Decimal");
+		btn3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnUsedOutput=" → Decimal";
+				int i=0;
+				int j=0;
+				int fixNumber=0;
+				
+				//binary to decimal
+				if(btnBinary) {
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+						if(!a[i].equals("1")&!a[i].equals("0")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					String number = tfInput.getText().replaceAll(" ", "");
+					for(i=number.length()-1; i>=0; i--) {
+						double digit =  Double.parseDouble(String.valueOf(number.charAt(i)));
+						fixNumber = (int) (Math.pow(2, j)*digit + fixNumber);
+						j++;
+					}
+					tfOutput.setText(String.valueOf(fixNumber));
+					btnBinary = false;
+				}
+				}
+				
+				//Octal to decimal
+				if(btnOctal) {
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String number = tfInput.getText().replaceAll(" ", "");
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+						if(!a[i].matches("[0-7]")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					for(i=number.length()-1; i>=0; i--) {
+						double digit =  Double.parseDouble(String.valueOf(number.charAt(i)));
+						fixNumber = (int) (Math.pow(8, j)*digit + fixNumber);
+						j++;
+					}
+					tfOutput.setText(String.valueOf(fixNumber));
+					btnOctal = false;
+					}
+				}
+			
+				//decimal to decimal
+				if(btnDecimal) {
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+						if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")&!a[i].equals("8")&!a[i].equals("9")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					tfOutput.setText(tfInput.getText().replaceAll(" ", ""));
+					btnDecimal=false;
+					}
+				}
+				
+				if(btnHexa) {
+					//hexa to decimal
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String number = tfInput.getText().replaceAll(" ", "");
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+							if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")&!a[i].equals("8")&!a[i].equals("9")&!a[i].equals("A")&!a[i].equals("B")&!a[i].equals("C")&!a[i].equals("D")&!a[i].equals("E")&!a[i].equals("F")) {
+								btnError=true;
+							}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					for(i=number.length()-1; i>=0; i--) {
+						char ch = number.charAt(i);
+						int digits = Character.digit(ch, 16);
+						fixNumber = (int) (Math.pow(16, j)*digits+fixNumber);
+						j++;
+					}
+					tfOutput.setText(String.valueOf(fixNumber));
+					btnHexa=false;
+					}
+				}
+			}
+		});
+		btn3.setForeground(Color.BLACK);
+		btn3.setBackground(new Color(0, 255, 64));
+		btn3.setBounds(207, 199, 119, 23);
+		contentPane.add(btn3);
+		
+		btn4 = new JButton("Hexa");
+		btn4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnUsedOutput=" → Hexa";
+				
+				if(btnBinary) {
+					//binary to hexa
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					int i=0;
+					int j=0;
+					int fixNumber=0;
+					String result="";
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+						if(!a[i].equals("0")&!a[i].equals("1")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+						String number = tfInput.getText().replaceAll(" ", "");
+						for(i=number.length()-1; i>=0; i--) {
+							double digit =  Double.parseDouble(String.valueOf(number.charAt(i)));
+							fixNumber = (int) (Math.pow(2, j)*digit + fixNumber);
+							j++;
+						}
+						i=0;
+						int b[] = new int[100];
+						if(fixNumber==0) {
+							result="0";
+						}
+						else {
+							while(fixNumber!=0) {
+								b[i]= fixNumber%16;
+								fixNumber = fixNumber/16;
+								i++;
+							}
+							j=0;
+							for(j=i-1; j>=0; j--) {
+								result = result+Integer.toHexString(b[j]).toUpperCase();
+							}
+						}
+					tfOutput.setText(result);
+					btnBinary=false;
+					}
+				}
+				
+				if(btnOctal) {
+					//octal to hexa
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					int fixNumber = 0;
+					int i=0;
+					int j=0;
+					String number = tfInput.getText().replaceAll(" ", "");
+					String a[] = new String[100];
+					for(i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+							if(!a[i].matches("[0-7]")) {
+								btnError=true;
+							}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+						for(i=number.length()-1; i>=0; i--) {
+							double digit =  Double.parseDouble(String.valueOf(number.charAt(i)));
+							fixNumber = (int) (Math.pow(8, j)*digit + fixNumber);
+							j++;
+						}
+						i=0;
+						int b[] = new int[100];
+						String result="";
+						if(fixNumber==0) {
+							result="0";
+						}
+						else {
+							while(fixNumber!=0) {
+								b[i]= fixNumber%16;
+								fixNumber = fixNumber/16;
+								i++;
+							}
+						for(j=i-1; j>=0; j--) {
+							result = result+Integer.toHexString(b[j]).toUpperCase();
+						}
+						}
+						tfOutput.setText(String.valueOf(result));
+						btnOctal=false;
+					}
+				}
+				
+				if(btnDecimal) {
+					//decimal to hexa
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(int i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().charAt(i));
+							if(!a[i].matches("[0-9]")) {
+								btnError=true;
+							}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+						int number = Integer.valueOf(tfInput.getText().replaceAll(" ", ""));
+						int i=0;
+						int b[] = new int[100];
+						String fixNumber="";
+						if(number==0) {
+							fixNumber = "0";
+						}
+						else {
+							while(number!=0) {
+								b[i]= number%16;
+								number = number/16;
+								i++;
+							}
+						for(int j=i-1; j>=0; j--) {
+							fixNumber = fixNumber+Integer.toHexString(b[j]).toUpperCase();
+						}
+						}
+				tfOutput.setText(fixNumber);
+				btnDecimal=false;
+					}
+				}
+				
+				if(btnHexa) {
+					//hexa to hexa
+					lblUsed.setText(btnUsedInput + btnUsedOutput);
+					String a[] = new String[100];
+					for(int i=0; i<tfInput.getText().length(); i++) {
+						a[i] = String.valueOf(tfInput.getText().toUpperCase().charAt(i));
+						if(!a[i].equals("0")&!a[i].equals("1")&!a[i].equals("2")&!a[i].equals("3")&!a[i].equals("4")&!a[i].equals("5")&!a[i].equals("6")&!a[i].equals("7")&!a[i].equals("8")&!a[i].equals("9")&!a[i].equals("A")&!a[i].equals("B")&!a[i].equals("C")&!a[i].equals("D")&!a[i].equals("E")&!a[i].equals("F")) {
+							btnError=true;
+						}
+					}
+					if(btnError) {
+						tfOutput.setText("Error");
+						btnError=false;
+					}
+					else {
+					tfOutput.setText(tfInput.getText().toUpperCase().replaceAll(" ", ""));
+					btnHexa=false;
+					}
+				}
+			}
+		});
+		btn4.setForeground(Color.BLACK);
+		btn4.setBackground(new Color(0, 255, 64));
+		btn4.setBounds(345, 199, 79, 23);
+		contentPane.add(btn4);
+		
+		JLabel lblInput = new JLabel("Input");
+		lblInput.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblInput.setBounds(180, 76, 56, 23);
+		contentPane.add(lblInput);
+	}
+}
